@@ -1,0 +1,40 @@
+{% extends 'store/base.html' %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-lg-5 mx-auto border rounded pt-4">
+       
+            <form class="form-gruop" action="/login" method="POST">
+              
+              <div class="alert alert-denger"></div>
+            
+                {% csrf_token %}
+                <h3 class="alert alert-light borde rounded text-center">Login Here</h3>
+                {% if error %}
+                <div class="alert alert-danger role=" role="danger">
+                  {{error}}
+                </div>
+
+
+
+                
+                {% endif %}
+                  <div class="form-group">
+                    <label for="inputName1">Email</label>
+                    <input type="email" value="{{value.email}}" name="email" class="form-control" id="inputemail">
+                  </div>
+                  <div class="form-group">
+                    <label for="inputName1">Password</label>
+                    <input type="password" name="password" class="form-control" id="inputpassword">
+                  </div>
+                  
+                  <div class="form-group">
+                      <input class="btn-success btn-lg" type="submit" value="Login">
+                  </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

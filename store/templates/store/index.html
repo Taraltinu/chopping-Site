@@ -1,0 +1,65 @@
+{% extends 'store/base.html'%}
+
+{% block content %}
+{% load cart %}
+{% load costom_filter %}
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-lg-3">
+      <a href="/" class="list-group-item list-group-item-action">All products</a>
+      {% for ct in category %}
+      <div class="list-group">
+      
+      <a href="/?category={{ct.id}}" class="list-group-item list-group-item-action">{{ct.name}}</a>
+       
+      </div>
+      {% endfor %}
+    </div>
+    <div class="col-lg-9">
+      <div class="row">
+      {% for pd in product%}
+      
+      <div class="card" id="{{pd.id}}" style="width: 12rem; height: auto;margin-left:10px ;">
+        <img class="card-img-top" src="{{pd.image.url}}" alt="Card image cap" height="200px">
+        <div class="card-body">
+          <h5 class="card-title">{{pd.name}}</h5>
+          <p class="card-text">{{pd.description}}</p>
+          <h5>{{pd.price|currncy}}</h5>
+          <!-- {{pd|is_in_cart:request.session.cart}} -->
+           <div class="card-footer p-0 no-gutters">
+             {% if pd|is_in_cart:request.session.cart %}
+             <div class="row no-gutters" >
+              <form action="#{{pd.id}}" method="POST" class="col-2">
+                {% csrf_token %}
+                <input type="text" hidden name="product" value="{{pd.id}}">
+                <input type="text" hidden name="remove" value="True">
+                 <input type="submit" value=" - " class="btn btn-block btn-secondary">
+               </form>
+              <div class="text_center col "> {{pd|cart_Quantity:request.session.cart}} in cart</div>
+              <form action="#{{pd.id}}" method="POST" class="col-2">
+               {% csrf_token %}
+               <input type="hidden" name="product" value="{{pd.id}}">
+                <input type="submit" value=" + " class="btn btn-block btn-secondary">
+              </form>
+            </div>
+            {% else %}
+            <form action="#{{pd.id}}" method="POST" class="btn-block">
+              {% csrf_token %}
+              <input type="hidden" name="product" value="{{pd.id}}">
+              <input type="submit" value="Add to Cart" class="fload-right btn btn-info border form-control">
+              </form>
+             {% endif %}
+           </div>
+         
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+     
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
